@@ -1,0 +1,26 @@
+{
+  "name": "gdq-printer",
+  "version": "1.0.0",
+  "description": "gdq schedule printer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dillonchr/gdq-printer.git"
+  },
+  "author": "@dillonchr",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/dillonchr/gdq-printer/issues"
+  },
+  "homepage": "https://github.com/dillonchr/gdq-printer#readme",
+  "keywords": [
+    "gdq"
+  ],
+  "dependencies": {
+    "@dillonchr/gdq": "^1.0.1",
+    "moment": "^2.22.2"
+  }
+}
