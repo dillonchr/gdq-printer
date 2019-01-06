@@ -7,29 +7,25 @@ module.exports = () => {
         if (err) {
             console.error(err);
         } else {
-            if (!runs.length || runs.filter(g => !g.done).length) {
+            if (!runs.length || !runs.filter(g => !g.done).length) {
                 process.exit(0);
-	    }
-
-            const today = new Date().getDate();
-            const runsToday = [`SGDQ 2018 - ${moment().format('MMM D')}`];
-            const len = runs.length;
-            let i = 0;
-
-            while (i < len) {
-                const run = runs[i];
-                const d = new Date(run.start);
-                if (d.getDate() > today) {
-                    break;
-                } else if (!run.done) {
-                    runsToday.push(`( ) ${run.title}\n--------------------------------\n${moment(run.start).format('h:mm A')} - ${moment(run.ends).format('h:mm A')}`);
-                }
-                i++;
             }
 
-            console.log(runsToday.join('\n\n'));
+            const now = new Date().getTime();
+            const tomorrow = new Date(now + (1000 * 60 * 60 * 24))
+            const runsToday = runs
+                .filter(r => {
+                    const ends = new Date(r.ends);
+                    const starts = new Date(r.start);
+                    return !r.done && ends > now && starts < tomorrow;
+                })
+                .reduce((list, run) => {
+                    return `${list}\n\n( ) ${run.title}\n--------------------------------\n${moment(run.start).format('h:mm A')} - ${moment(run.ends).format('h:mm A')}`;
+                }, `AGDQ 2019 - ${moment().format('MMM D')}`);
 
-            exec(`echo "${runsToday.join('\n\n')}\n\n" > /dev/usb/lp0`, (err, stdout, stderr) => {
+            console.log(runsToday);
+
+            exec(`echo "${runsToday}\n\n" > /dev/usb/lp0`, (err, stdout, stderr) => {
                 if (err) console.log(500, 'print error ' + err);
                 if (stderr) console.log(500, 'print error std ' + stderr);
                 if (!stderr && !err) console.log(200, 'think we printed');
