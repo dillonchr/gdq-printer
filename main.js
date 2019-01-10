@@ -22,7 +22,7 @@ module.exports = () => {
                     return !r.done && ends > now && starts < tomorrow;
                 })
                 .reduce((list, run) => {
-                    return `${list}\n\n( ) ${run.title}\n${moment(run.start).format('h:mm A')} - ${moment(run.ends).format('h:mm A')}\n--------------------------------`;
+                    return `${list}\n( ) ${run.title}\n    ${moment(run.start).format('h:mm A')} - ${moment(run.ends).format('h:mm A')}\n\n--------------------------------`;
                 }, `${AorS}GDQ ${year} - ${moment().format('MMM D')}`);
 
             console.log(runsToday);
