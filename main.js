@@ -12,7 +12,9 @@ module.exports = () => {
             }
 
             const now = new Date().getTime();
-            const tomorrow = new Date(now + (1000 * 60 * 60 * 24))
+            const tomorrow = new Date(now + (1000 * 60 * 60 * 24));
+            const AorS = tomorrow.getMonth() ? 'S' : 'A';
+            const year = tomorrow.getFullYear();
             const runsToday = runs
                 .filter(r => {
                     const ends = new Date(r.ends);
@@ -20,8 +22,8 @@ module.exports = () => {
                     return !r.done && ends > now && starts < tomorrow;
                 })
                 .reduce((list, run) => {
-                    return `${list}\n\n( ) ${run.title}\n--------------------------------\n${moment(run.start).format('h:mm A')} - ${moment(run.ends).format('h:mm A')}`;
-                }, `AGDQ 2019 - ${moment().format('MMM D')}`);
+                    return `${list}\n\n( ) ${run.title}\n${moment(run.start).format('h:mm A')} - ${moment(run.ends).format('h:mm A')}\n--------------------------------`;
+                }, `${AorS}GDQ ${year} - ${moment().format('MMM D')}`);
 
             console.log(runsToday);
 
