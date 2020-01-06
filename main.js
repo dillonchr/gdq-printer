@@ -66,7 +66,7 @@ module.exports = () => {
           const runTimes = `    ${moment(run.start).format(RUN_FORMAT)} - ${moment(run.ends).format(RUN_FORMAT)}`
           const spacePadding = Math.max(maxWidth - (estimate.length + runTimes.length), 0)
           const runTitle = BONUS_GAME.test(run.title) ?
-            '??? Bonus\n    ¿¿¿' :
+            '??? Bonus\n    ???' :
             run.title
           return `${list}\n( ) ${runTitle}\n${runTimes}${spaces(spacePadding)}${estimate}\n\n--------------------------------`
         }, `${AorS}GDQ ${year} - ${moment().format('MMM D')}`))
