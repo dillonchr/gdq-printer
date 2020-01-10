@@ -46,14 +46,14 @@ module.exports = () => {
       }
 
       const now = new Date().getTime()
-      const tomorrow = moment(now + (1000 * 60 * 60 * 24)).format(DATE_COMPARE_FORMAT)
+      const relevantDates = [moment().format(DATE_COMPARE_FORMAT), moment(now + (1000 * 60 * 60 * 24)).format(DATE_COMPARE_FORMAT)]
       const AorS = moment().format('M') > 1 ? 'S' : 'A'
       const seed = spaceBetween(`${AorS}GDQ ${moment().format('Y')}`, moment(now + 1000 * 60 * 120).format('MMM D')) + '\n'
       const runsToday = receiptFormatter(runs
         .filter(r => {
           const ends = new Date(r.ends)
           const starts = moment(r.start).format(DATE_COMPARE_FORMAT)
-          return !r.done && ends > now && starts === tomorrow
+          return !r.done && ends > now && relevantDates.includes(starts)
         })
         .reduce((list, run) => {
           const estimate = run.estimate.split(':')
