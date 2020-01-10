@@ -45,10 +45,14 @@ module.exports = () => {
         process.exit(0)
       }
 
-      const now = new Date().getTime()
-      const relevantDates = [moment().format(DATE_COMPARE_FORMAT), moment(now + (1000 * 60 * 60 * 24)).format(DATE_COMPARE_FORMAT)]
+      const nowDate = new Date()
+      const now = nowDate.getTime()
+      const relevantDates = [moment().format(DATE_COMPARE_FORMAT)]
+      if (nowDate.getHours() > 5) {
+        relevantDates.push(moment(now + (1000 * 60 * 60 * 24)).format(DATE_COMPARE_FORMAT))
+      }
       const AorS = moment().format('M') > 1 ? 'S' : 'A'
-      const seed = spaceBetween(`${AorS}GDQ ${moment().format('Y')}`, moment(now + 1000 * 60 * 120).format('MMM D')) + '\n'
+      const seed = spaceBetween(`${AorS}GDQ ${moment().format('Y')}`, moment(now + 1000 * 60 * 120).format('ddd MMM D')) + '\n'
       const runsToday = receiptFormatter(runs
         .filter(r => {
           const ends = new Date(r.ends)
