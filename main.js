@@ -32,6 +32,10 @@ const receiptFormatter = text => {
 
 const spaces = (n) => Array(n).fill(' ').join('')
 
+const DATE_COMPARE_FORMAT = 'l'
+
+const spaceBetween = (w1, w2) => w1 + spaces(maxWidth - (w1.length + w2.length)) + w2
+
 module.exports = () => {
   gdq((err, runs) => {
     if (err) {
@@ -42,14 +46,14 @@ module.exports = () => {
       }
 
       const now = new Date().getTime()
-      const tomorrow = new Date(now + (1000 * 60 * 60 * 24))
-      const AorS = tomorrow.getMonth() ? 'S' : 'A'
-      const year = tomorrow.getFullYear()
+      const tomorrow = moment(now + (1000 * 60 * 60 * 24)).format(DATE_COMPARE_FORMAT)
+      const AorS = moment().format('M') > 1 ? 'S' : 'A'
+      const seed = spaceBetween(`${AorS}GDQ ${moment().format('Y')}`, moment(now + 1000 * 60 * 120).format('MMM D')) + '\n'
       const runsToday = receiptFormatter(runs
         .filter(r => {
           const ends = new Date(r.ends)
-          const starts = new Date(r.start)
-          return !r.done && ends > now && starts < tomorrow
+          const starts = moment(r.start).format(DATE_COMPARE_FORMAT)
+          return !r.done && ends > now && starts === tomorrow
         })
         .reduce((list, run) => {
           const estimate = run.estimate.split(':')
@@ -69,7 +73,7 @@ module.exports = () => {
             '??? Bonus\n    ???' :
             run.title
           return `${list}\n( ) ${runTitle}\n${runTimes}${spaces(spacePadding)}${estimate}\n\n--------------------------------`
-        }, `${AorS}GDQ ${year} - ${moment().format('MMM D')}`))
+        }, seed))
 
       console.log(runsToday)
 
