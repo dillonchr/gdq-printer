@@ -8,7 +8,8 @@ function printReceiptLine(line, maxWidth = DEFAULT_MAX_WIDTH) {
 
 function* printLine(line, maxWidth = DEFAULT_MAX_WIDTH) {
   if (line.length <= maxWidth) {
-    return line;
+    yield line;
+    return;
   }
 
   const words = line.split(" ");
@@ -35,6 +36,9 @@ const spaceBetween = (w1, w2, maxWidth) => {
   return w1 + spaces(maxWidth - (w1.length + w2.length)) + w2;
 };
 
-const spaces = n => Array(Math.max(n, 0)).fill(" ").join("");
+const fillLine = (char, maxWidth = DEFAULT_MAX_WIDTH) =>
+  Array(Math.max(maxWidth, 0)).fill(char).join("");
+const spaces = n => fillLine(" ", n);
+const lineRule = () => fillLine("-");
 
-module.exports = { printReceiptLine, spaces, spaceBetween };
+module.exports = { lineRule, printReceiptLine, spaces, spaceBetween };
