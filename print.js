@@ -1,14 +1,12 @@
 const DEFAULT_MAX_WIDTH = 32;
 
-const receiptFormatter = (text, maxWidth = DEFAULT_MAX_WIDTH) => {
-  const result = text
-    .split("\n")
-    .map(line => printLine(line, maxWidth))
-    .join("\n");
-  return result;
-};
+function printReceiptLine(line, maxWidth = DEFAULT_MAX_WIDTH) {
+  for (const receiptLine of printLine(line, maxWidth)) {
+    console.log(receiptLine);
+  }
+}
 
-function printLine(line, maxWidth = DEFAULT_MAX_WIDTH) {
+function* printLine(line, maxWidth = DEFAULT_MAX_WIDTH) {
   if (line.length <= maxWidth) {
     return line;
   }
@@ -20,17 +18,16 @@ function printLine(line, maxWidth = DEFAULT_MAX_WIDTH) {
     if (!newLine) {
       newLine = word;
     } else {
-      const lastNewLine = newLine.lastIndexOf("\n");
-      const lengthSoFar = newLine.substr(lastNewLine + 1).length;
-      const wouldBeNextLineLength = lengthSoFar + 1 + word.length;
+      const wouldBeNextLineLength = newLine.length + 1 + word.length;
       if (wouldBeNextLineLength < maxWidth) {
         newLine = [newLine, word].join(" ");
       } else {
-        newLine = newLine + "\n    " + word;
+        yield newLine;
+        newLine = "    " + word;
       }
     }
   }
-  return newLine;
+  yield newLine;
 }
 
 const spaceBetween = (w1, w2, maxWidth) => {
@@ -40,4 +37,4 @@ const spaceBetween = (w1, w2, maxWidth) => {
 
 const spaces = n => Array(Math.max(n, 0)).fill(" ").join("");
 
-module.exports = { receiptFormatter, spaces, spaceBetween };
+module.exports = { printReceiptLine, spaces, spaceBetween };
