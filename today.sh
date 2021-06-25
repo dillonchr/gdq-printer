@@ -1,5 +1,6 @@
 #!/bin/bash
-chown -R $(whoami) /dev/usb/lp0
-/home/pi/git/png2pos/print.py gdq.png > /dev/usb/lp0
-node main.js
+PRINT_PATH=/dev/usb/lp0
+# chown -R $(whoami) $PRINT_PATH
+/home/pi/git/png2pos/print.py gdq.png > $PRINT_PATH
+node main.js > $PRINT_PATH
 
