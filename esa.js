@@ -22,8 +22,8 @@ function deMarkdown(str) {
 
 function prettyLength(length) {
   return [
-    String(Math.floor(length / 3600)).padStart(2, "0"),
-    String((length / 60) % 60).padStart(2, "0"),
+    String(Math.floor(length / 3600)),
+    String((length / 60) % 60),
     String(length % 60).padStart(2, "0")
   ].join(":");
 }

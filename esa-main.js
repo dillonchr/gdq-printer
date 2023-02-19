@@ -76,16 +76,10 @@ module.exports = () => {
           const runTitle = BONUS_GAME.test(run.title) ?
             '??? Bonus\n    ???' :
             run.title
-          return `${list}\n( ) ${runTitle}\n${runTimes}${spaces(spacePadding)}${estimate}\n\n--------------------------------`
+          return `${list}\n(${"2023-winter1" === run.stream ? 1 : 2}) ${runTitle}\n${runTimes}${spaces(spacePadding)}${estimate}\n\n--------------------------------`
         }, seed))
 
       console.log(runsToday)
-
-      exec(`echo "${runsToday}\n\n" > /dev/usb/lp0`, (err, stdout, stderr) => {
-        if (err) console.log(500, 'print error ' + err)
-        if (stderr) console.log(500, 'print error std ' + stderr)
-        if (!stderr && !err) console.log(200, 'think we printed')
-      })
     }
   })
 }
