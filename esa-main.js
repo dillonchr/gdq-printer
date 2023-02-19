@@ -63,7 +63,6 @@ module.exports = eventCode => {
       const runsToday = receiptFormatter(
         runs
           .filter(r => {
-            const ends = new Date(r.ends);
             return !r.done && includedInToday(r.start);
           })
           .reduce((list, run) => {
@@ -79,9 +78,9 @@ module.exports = eventCode => {
                     return str;
                 }
               }, "");
-            const runTimes = `    ${moment(run.start).format(
+            const runTimes = `    ${run.start.format(
               RUN_FORMAT
-            )} - ${moment(run.ends).format(RUN_FORMAT)}`;
+            )} - ${run.ends.format(RUN_FORMAT)}`;
             const spacePadding = Math.max(
               maxWidth - (estimate.length + runTimes.length),
               0
