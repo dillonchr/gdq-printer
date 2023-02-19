@@ -1,3 +1,4 @@
+const gdq = require('@dillonchr/gdq')
 const esa = require("./esa.js");
 const moment = require("moment");
 const maxWidth = 32;
@@ -35,26 +36,20 @@ const spaceBetween = (w1, w2) =>
   w1 + spaces(maxWidth - (w1.length + w2.length)) + w2;
 
 function eventName(acronym) {
-  if ("esa" === acronym) {
-    const season = moment().format("M") < 6 ? "WINTER" : "SUMMER";
-    return (
-      spaceBetween(
-        `ESA ${season} ${moment().format("Y")}`,
-        moment().format("ddd MMM D")
-      ) + "\n"
-    );
-  }
-  const AorS = moment().format("M") > 1 ? "S" : "A";
+  const isWinter = moment().format("M") < 6;
   return (
     spaceBetween(
-      `${AorS}GDQ ${moment().format("Y")}`,
+      "esa" === acronym
+        ? `ESA ${isWinter ? "WINTER" : "SUMMER"}`
+        : `${isWinter ? "A" : "S"}GDQ`,
       moment().format("ddd MMM D")
     ) + "\n"
   );
 }
 
-module.exports = () => {
-  esa((err, runs) => {
+module.exports = eventCode => {
+  const fetch = "esa" === eventCode ? esa : gdq;
+  fetch((err, runs) => {
     if (err) {
       console.error(err);
     } else {
@@ -95,11 +90,15 @@ module.exports = () => {
               ? "??? Bonus\n    ???"
               : run.title;
             return `${list}\n(${
-              "2023-winter1" === run.stream ? 1 : 2
+              "esa" === eventCode
+                ? "2023-winter1" === run.stream
+                  ? 1
+                  : 2
+                : " "
             }) ${runTitle}\n${runTimes}${spaces(
               spacePadding
             )}${estimate}\n\n--------------------------------`;
-          }, eventName("esa"))
+          }, eventName(eventCode))
       );
 
       console.log(runsToday);
@@ -107,4 +106,4 @@ module.exports = () => {
   });
 };
 
-module.exports();
+module.exports("esa");
