@@ -20,6 +20,7 @@
     "gdq"
   ],
   "dependencies": {
+    "@dillonchr/fetch": "^1.0.1",
     "@dillonchr/gdq": "^1.0.1",
     "moment": "^2.22.2"
   }
