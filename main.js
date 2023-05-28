@@ -45,19 +45,17 @@ module.exports = () => {
         process.exit(0)
       }
 
-      const nowDate = new Date()
-      const now = nowDate.getTime()
+      const now = moment();
+      const endOfSchedule = moment().add(24, "hours");
+      const includedInToday = starts => endOfSchedule.isAfter(starts);
+
       const relevantDates = [moment().format(DATE_COMPARE_FORMAT)]
-      if (nowDate.getHours() > 5) {
-        relevantDates.push(moment(now + (1000 * 60 * 60 * 24)).format(DATE_COMPARE_FORMAT))
-      }
+
       const AorS = moment().format('M') > 1 ? 'S' : 'A'
-      const seed = spaceBetween(`${AorS}GDQ ${moment().format('Y')}`, moment(now + 1000 * 60 * 120).format('ddd MMM D')) + '\n'
+      const seed = spaceBetween(`${AorS}GDQ ${moment().format('Y')}`, moment().format('ddd MMM D')) + '\n'
       const runsToday = receiptFormatter(runs
         .filter(r => {
-          const ends = new Date(r.ends)
-          const starts = moment(r.start).format(DATE_COMPARE_FORMAT)
-          return !r.done && ends > now && relevantDates.includes(starts)
+          return !r.done && includedInToday(r.start);
         })
         .reduce((list, run) => {
           const estimate = run.estimate.split(':')
@@ -80,12 +78,6 @@ module.exports = () => {
         }, seed))
 
       console.log(runsToday)
-
-      exec(`echo "${runsToday}\n\n" > /dev/usb/lp0`, (err, stdout, stderr) => {
-        if (err) console.log(500, 'print error ' + err)
-        if (stderr) console.log(500, 'print error std ' + stderr)
-        if (!stderr && !err) console.log(200, 'think we printed')
-      })
     }
   })
 }
