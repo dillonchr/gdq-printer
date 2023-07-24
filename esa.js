@@ -1,8 +1,8 @@
 const moment = require("moment");
 const fetch = require("@dillonchr/fetch");
 const urls = [
-  "https://app.esamarathon.dev/horaro-proxy/v2/esa/schedule/2023-winter1",
-  "https://app.esamarathon.dev/horaro-proxy/v2/esa/schedule/2023-winter2"
+  "https://app.esamarathon.dev/horaro-proxy/v2/esa/schedule/2023-summer1",
+  "https://app.esamarathon.dev/horaro-proxy/v2/esa/schedule/2023-summer2"
 ];
 
 /*
@@ -17,7 +17,9 @@ const urls = [
   */
 
 function deMarkdown(str) {
-  return str.replace(/^\[/, "").replace(/\].*$/, "");
+  return null != str ?
+    str.replace(/^\[/, "").replace(/\].*$/, "") :
+    "";
 }
 
 function prettyLength(length) {
