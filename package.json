@@ -1,5 +1,6 @@
 {
   "name": "gdq-printer",
+  "type": "module",
   "version": "1.0.0",
   "description": "gdq schedule printer",
   "main": "index.js",
@@ -22,6 +23,7 @@
   "dependencies": {
     "@dillonchr/fetch": "^1.0.1",
     "@dillonchr/gdq": "^1.0.1",
-    "moment": "^2.22.2"
+    "moment": "^2.30.1",
+    "node-fetch": "^3.3.2"
   }
 }
